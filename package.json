@@ -1,0 +1,56 @@
+{
+  "name": "tarot-booking-app",
+  "version": "1.0.0",
+  "description": "Telegram Mini App для записи к тарологу с реферальной системой",
+  "main": "index.html",
+  "scripts": {
+    "dev": "live-server --port=3000 --host=0.0.0.0 --open=/ --watch=./ --ignore=node_modules",
+    "dev-simple": "python -m http.server 3000",
+    "dev-node": "node -e \"const http=require('http'),fs=require('fs'),path=require('path');http.createServer((req,res)=>{let file=req.url==='/'?'/index.html':req.url;let filePath=path.join(__dirname,file);fs.readFile(filePath,(err,data)=>{if(err){res.writeHead(404);res.end('Not found');return;}const ext=path.extname(file);const mimes={'html':'text/html','css':'text/css','js':'text/javascript'};res.writeHead(200,{'Content-Type':mimes[ext.slice(1)]||'text/plain'});res.end(data);});}).listen(3000,()=>console.log('Server running on http://localhost:3000'));\"",
+    "start": "npm run dev",
+    "build": "npm run minify && npm run optimize",
+    "minify": "npm run minify-css && npm run minify-js",
+    "minify-css": "cleancss -o dist/styles/main.min.css styles/*.css",
+    "minify-js": "uglifyjs js/*.js -o dist/js/app.min.js --compress --mangle",
+    "optimize": "imagemin images/* --out-dir=dist/images",
+    "serve": "serve -s . -l 3000",
+    "serve-https": "serve -s . -l 3000 --ssl-cert cert.pem --ssl-key key.pem",
+    "tunnel": "ngrok http 3000",
+    "deploy-netlify": "netlify deploy --prod --dir=.",
+    "deploy-vercel": "vercel --prod",
+    "test": "echo \"No tests specified\" && exit 0",
+    "lint": "eslint js/*.js",
+    "format": "prettier --write *.html js/*.js styles/*.css",
+    "validate": "html-validate *.html",
+    "fix-warnings": "npm audit fix && npm update"
+  },
+  "keywords": [
+      "telegram",
+      "mini-app",
+      "tarot",
+      "booking",
+      "referral",
+      "javascript"
+  ],
+  "author": "Ваше имя",
+  "license": "MIT",
+  "devDependencies": {
+      "live-server": "^1.2.2",
+      "serve": "^14.2.1",
+      "clean-css-cli": "^5.6.2",
+      "uglify-js": "^3.17.4",
+      "imagemin-cli": "^7.0.0",
+      "ngrok": "^4.3.3",
+      "netlify-cli": "^17.10.1",
+      "vercel": "^32.5.0",
+      "eslint": "^8.53.0",
+      "prettier": "^3.1.0",
+      "html-validate": "^8.7.3"
+  },
+  "dependencies": {},
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/warpVIT1/tarot-booking-app.git"
+  },
+  "homepage": "https://github.com/warpVIT1/tarot-booking-app"
+}

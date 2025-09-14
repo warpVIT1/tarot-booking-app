@@ -1,0 +1,355 @@
+/* Основные стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--tg-theme-bg-color, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+    color: var(--tg-theme-text-color, #333);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+:root {
+    --primary-color: #667eea;
+    --secondary-color: #764ba2;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --bg-color: #f8f9fa;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Telegram Mini App темизация */
+body.dark {
+    --bg-color: #1a1a1a;
+    --card-bg: #2a2a2a;
+    --text-color: #ffffff;
+}
+
+/* Экраны */
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 0;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Загрузочный экран */
+#loading-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.loading-container {
+    text-align: center;
+    color: white;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Экран авторизации */
+#auth-screen {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.auth-form {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+
+.auth-form h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.auth-form p {
+    margin-bottom: 30px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Выбор роли */
+.role-selection {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.role-btn {
+    background: var(--card-bg);
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    color: inherit;
+}
+
+.role-btn:hover, .role-btn.selected {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.role-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.role-btn h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.role-btn p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Информация о пользователе Telegram */
+.telegram-user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+#user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#user-info h4 {
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+#user-info p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Кнопки */
+.primary-btn, .secondary-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.secondary-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Основное приложение */
+#main-app {
+    background: var(--bg-color);
+}
+
+/* Навигация */
+.main-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: #666;
+}
+
+.nav-btn.active {
+    color: var(--primary-color);
+}
+
+.nav-icon {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+.nav-btn span:last-child {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Контент */
+.content {
+    padding: 20px;
+    padding-bottom: 80px; /* Отступ для навигации */
+    min-height: 100vh;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    .auth-form {
+        padding: 20px;
+    }
+
+    .content {
+        padding: 15px;
+        padding-bottom: 80px;
+    }
+}
+
+/* Режим разработки */
+.dev-mode .header::after {
+    content: " (DEV MODE)";
+    font-size: 0.8rem;
+    color: #ff9800;
+    font-weight: normal;
+}
+
+.dev-mode #loading-screen {
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+}
+
+.dev-mode #loading-screen h2::after {
+    content: " 🔧";
+}
+
+/* В дебаг режиме показываем авторизацию БЕЗ загрузки */
+.dev-mode #auth-screen {
+    display: flex !important;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998 !important;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}

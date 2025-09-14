@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot App - Dev Mode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .auth-form {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .dev-indicator {
+            position: absolute;
+            top: -10px;
+            right: 15px;
+            background: #ff9800;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .auth-form h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .auth-form p {
+            margin-bottom: 30px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .role-selection {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .role-btn {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .role-btn:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .role-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .role-btn h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #667eea;
+        }
+
+        .role-btn p {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .quick-actions {
+            border-top: 1px solid #e9ecef;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .quick-actions h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .quick-btn {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 5px 0;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .quick-btn:hover {
+            background: #e9ecef;
+        }
+
+        .quick-btn.client {
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+
+        .quick-btn.tarot {
+            border-color: #9c27b0;
+            color: #9c27b0;
+        }
+
+        .quick-btn.danger {
+            border-color: #f44336;
+            color: #f44336;
+        }
+
+        .quick-btn.info {
+            border-color: #2196f3;
+            color: #2196f3;
+        }
+
+        /* Основное приложение */
+        .main-app {
+            display: none;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .main-app.active {
+            display: block;
+        }
+
+        .app-header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            padding: 10px 0;
+        }
+
+        .nav-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #666;
+        }
+
+        .nav-btn.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 2px;
+        }
+
+        .nav-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Экран авторизации -->
+    <div id="auth-screen" class="container">
+        <div class="header">
+            <h1>🔮 Запись к тарологу</h1>
+            <p>Профессиональные таро-консультации</p>
+        </div>
+
+        <div class="auth-form">
+            <div class="dev-indicator">🔧 DEV MODE</div>
+
+            <h2>Добро пожаловать!</h2>
+            <p>Выберите, как вы хотите использовать приложение:</p>
+
+            <div class="role-selection">
+                <div class="role-btn" onclick="login('client')">
+                    <div class="role-icon">👤</div>
+                    <h3>Я клиент</h3>
+                    <p>Хочу записаться на консультацию</p>
+                </div>
+
+                <div class="role-btn" onclick="login('tarot')">
+                    <div class="role-icon">🔮</div>
+                    <h3>Я таролог</h3>
+                    <p>Хочу принимать клиентов</p>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h4>🛠️ Быстрые действия:</h4>
+                <button class="quick-btn client" onclick="quickLogin('client')">
+                    👤 Быстрый вход как Клиент
+                </button>
+                <button class="quick-btn tarot" onclick="quickLogin('tarot')">
+                    🔮 Быстрый вход как Таролог
+                </button>
+                <button class="quick-btn info" onclick="addTestData()">
+                    📋 Создать тестовые данные
+                </button>
+                <button class="quick-btn danger" onclick="clearData()">
+                    🗑️ Очистить все данные
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основное приложение -->
+    <div id="main-app" class="main-app">
+        <div class="app-header">
+            <div class="user-info">
+                <div class="avatar" id="user-avatar">T</div>
+                <div>
+                    <div id="user-name">Тестовый пользователь</div>
+                    <div id="user-role" style="font-size: 0.8rem; color: #666;">Клиент</div>
+                </div>
+            </div>
+            <button onclick="logout()" style="background: #f44336; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer;">
+                Выйти
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="welcome-card">
+                <h2 id="welcome-title">Добро пожаловать!</h2>
+                <p id="welcome-text">Выберите функцию в навигации ниже</p>
+            </div>
+
+            <div class="feature-grid" id="features"></div>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="switchTab('main')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Главная</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('booking')">
+                <span class="nav-icon">📅</span>
+                <span class="nav-text">Записи</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('profile')">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">Профиль</span>
+            </button>
+            <button class="nav-btn" onclick="switchTab('referral')">
+                <span class="nav-icon">🎁</span>
+                <span class="nav-text">Рефералы</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentTab = 'main';
+
+        // Авторизация
+        function login(role) {
+            console.log('Авторизация как:', role);
+            showApp(role);
+        }
+
+        function quickLogin(role) {
+            console.log('Быстрый вход как:', role);
+            showApp(role);
+        }
+
+        function showApp(role) {
+            currentUser = {
+                id: Date.now(),
+                name: role === 'client' ? 'Тестовый Клиент' : 'Тестовый Таролог',
+                role: role,
+                avatar: role === 'client' ? '👤' : '🔮'
+            };
+
+            // Скрываем авторизацию, показываем приложение
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-app').classList.add('active');
+
+            // Обновляем интерфейс
+            updateUserInterface();
+            loadFeatures();
+
+            console.log('Приложение загружено для:', currentUser);
+        }
+
+        function updateUserInterface() {
+            document.getElementById('user-avatar').textContent = currentUser.avatar;
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-role').textContent = currentUser.role === 'client' ? 'Клиент' : 'Таролог';
+
+            const welcomeTitle = document.getElementById('welcome-title');
+            const welcomeText = document.getElementById('welcome-text');
+
+            if (currentUser.role === 'client') {
+                welcomeTitle.textContent = 'Добро пожаловать, клиент!';
+                welcomeText.textContent = 'Здесь вы можете записаться на таро-консультацию';
+            } else {
+                welcomeTitle.textContent = 'Добро пожаловать, таролог!';
+                welcomeText.textContent = 'Управляйте своим расписанием и записями клиентов';
+            }
+        }
+
+        function loadFeatures() {
+            const featuresContainer = document.getElementById('features');
+            let features = [];
+
+            if (currentUser.role === 'client') {
+                features = [
+                    { icon: '📅', title: 'Записаться', desc: 'Выбрать время для консультации', action: 'booking' },
+                    { icon: '📋', title: 'Мои записи', desc: 'Просмотр записей', action: 'mybookings' },
+                    { icon: '🎁', title: 'Рефералы', desc: 'Пригласить друзей', action: 'referral' },
+                    { icon: '⭐', title: 'Отзывы', desc: 'Оставить отзыв', action: 'reviews' }
+                ];
+            } else {
+                features = [
+                    { icon: '⏰', title: 'Расписание', desc: 'Управление временем', action: 'schedule' },
+                    { icon: '👥', title: 'Клиенты', desc: 'Записи клиентов', action: 'clients' },
+                    { icon: '📊', title: 'Статистика', desc: 'Отчеты и аналитика', action: 'stats' },
+                    { icon: '💰', title: 'Доходы', desc: 'Финансовая статистика', action: 'revenue' }
+                ];
+            }
+
+            featuresContainer.innerHTML = features.map(feature => `
+                <div class="feature-card" onclick="openFeature('${feature.action}')">
+                    <div class="feature-icon">${feature.icon}</div>
+                    <div class="feature-title">${feature.title}</div>
+                    <div class="feature-desc">${feature.desc}</div>
+                </div>
+            `).join('');
+        }
+
+        function openFeature(action) {
+            alert(`Открытие функции: ${action}\n\nЭто демо-версия. В полной версии здесь будет соответствующий функционал.`);
+        }
+
+        function switchTab(tab) {
+            // Убираем активность со всех кнопок
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            // Активируем текущую
+            event.target.classList.add('active');
+
+            currentTab = tab;
+            console.log('Переключение на вкладку:', tab);
+
+            if (tab === 'booking') {
+                alert('Здесь будет система записей');
+            } else if (tab === 'profile') {
+                alert('Здесь будет профиль пользователя');
+            } else if (tab === 'referral') {
+                alert('Здесь будет реферальная система');
+            }
+        }
+
+        function logout() {
+            if (confirm('Выйти из приложения?')) {
+                currentUser = null;
+                document.getElementById('main-app').classList.remove('active');
+                document.getElementById('auth-screen').style.display = 'block';
+                console.log('Пользователь вышел');
+            }
+        }
+
+        function addTestData() {
+            alert('✅ Тестовые данные созданы!\n\n- 3 временных слота\n- 2 записи клиентов\n- Реферальные бонусы');
+            console.log('Тестовые данные добавлены');
+        }
+
+        function clearData() {
+            if (confirm('Удалить все данные?')) {
+                alert('🗑️ Все данные очищены');
+                console.log('Данные очищены');
+            }
+        }
+
+        // Инициализация
+        console.log('🔧 Dev версия приложения загружена');
+        console.log('Доступные функции: login(), quickLogin(), addTestData(), clearData()');
+    </script>
+</body>
+</html>
